@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamza Malik · MERN Stack Developer</title>
+
+  <!-- ===== FONTS & ICONS ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="icon" type="image/png" href="./Hamzaa.jpeg" />
+
+  <!-- ===== EXTERNAL SCRIPTS (CDN) ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.7.4/tsparticles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- ===== CUSTOM FILES ===== -->
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+<body>
+
+  <!-- ===== CUSTOM CURSOR ===== -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <nav>
+      <a class="brand" href="#hero">
+        <span class="dot"></span>
+        <span class="brand-name">Hamza Malik</span>
+      </a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#hire">Why Hire Me</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-primary" id="resumeNavBtn">
+          <i class="fa-solid fa-download"></i> CV (PDF)
+        </button>
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#hire">Why Hire Me</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section class="hero section" id="hero">
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge animate__animated animate__fadeInDown">
+          🚀 Available Immediately · Open to Internship
+        </div>
+        <div class="hero-intro animate__animated animate__fadeInDown animate__delay-1s">
+          <span>Hi, I'm Hamza Malik —</span>
+          <span id="typedRoles"></span>
+        </div>
+        <h1 class="hero-title animate__animated animate__fadeInUp">
+          Building Scalable. <strong>Responsive.</strong> Real-World Web Apps
+        </h1>
+        <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+          MERN Stack Developer with hands-on experience in React.js, Node.js, Express.js, and MongoDB. Passionate about writing clean, scalable code and delivering impactful digital experiences.
+        </p>
+        <div class="hero-actions animate__animated animate__fadeInUp animate__delay-2s">
+          <button class="btn-primary btn-large" id="resumeHeroBtn">
+            <i class="fa-solid fa-file-arrow-down"></i> Download CV (PDF)
+          </button>
+          <a href="#contact" class="btn-secondary btn-large">
+            📅 Request Consultation
+          </a>
+          <a href="#hire" class="btn-primary btn-large btn-success">
+            <i class="fa-solid fa-bolt"></i> Hire Me Now
+          </a>
+        </div>
+        <div class="hero-meta animate__animated animate__fadeInUp animate__delay-3s">
+          <div class="hero-meta-card">
+            <span>💼 Experience</span>
+            <strong id="expCount">0</strong>
+          </div>
+          <div class="hero-meta-card">
+            <span>📁 Projects</span>
+            <strong id="projectCount">0</strong>
+          </div>
+          <div class="hero-meta-card">
+            <span>📜 Certifications</span>
+            <strong id="certCount">0</strong>
+          </div>
+          <!-- <div class="hero-meta-card">
+            <span>💻 Lines of Code</span>
+            <strong id="codeCount">0</strong>
+          </div> -->
+        </div>
+      </div>
+    </section>
+
+    <div class="page-wrap">
+      <!-- ===== ABOUT ===== -->
+      <section class="section" id="about">
+        <div class="section-title">
+          <span>01</span>
+          <div>
+            <h2>About Me</h2>
+            <p>Motivated MERN Stack Developer with professional training from EVS Institute Lahore.</p>
+          </div>
+        </div>
+        <div class="about-grid">
+          <div class="profile-card animate__animated animate__fadeInLeft">
+            <div class="profile-picture">
+              <img src="./Hamzaa.jpeg" alt="Hamza Malik" />
+            </div>
+            <h3>Hamza Malik</h3>
+            <p><strong>MERN STACK DEVELOPER</strong> — Building Scalable. Responsive. Real-World Web Apps</p>
+            <p>Motivated developer with hands-on experience building responsive, full-stack web applications using React.js, Node.js, Express.js, and MongoDB. Successfully completed professional Full Stack Web Development training from EVS Institute Lahore.</p>
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <strong><i class="fa-solid fa-location-dot" style="color:var(--accent);"></i> Lahore, Pakistan</strong>
+              </div>
+              <div class="profile-stat">
+                <strong><i class="fa-solid fa-envelope" style="color:var(--accent);"></i></strong> hamzaaweb.dev@gmail.com
+              </div>
+              <div class="profile-stat">
+                <strong><i class="fa-solid fa-phone" style="color:var(--accent);"></i></strong> +92 322 3946478
+              </div>
+            </div>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <a href="https://linkedin.com/in/hamza-malik-74a181376" target="_blank" style="color:var(--accent); text-decoration:none; font-size:0.9rem;">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+              </a>
+              <a href="https://github.com/mrhananmalik111-wq" target="_blank" style="color:var(--accent); text-decoration:none; font-size:0.9rem;">
+                <i class="fa-brands fa-github"></i> GitHub
+              </a>
+            </div>
+          </div>
+          <div class="glass-card animate__animated animate__fadeInRight">
+            <h3>Core Technical Skills</h3>
+            <div style="margin-top:0.8rem; display:grid; gap:0.8rem;">
+              <div><strong style="color:var(--accent);">Frontend:</strong> HTML5, CSS3, JavaScript (ES6+), React.js, Bootstrap, Responsive Web Design</div>
+              <div><strong style="color:var(--accent);">Backend:</strong> Node.js, Express.js</div>
+              <div><strong style="color:var(--accent);">Database:</strong> MongoDB, Mongoose</div>
+              <div><strong style="color:var(--accent);">Auth & Security:</strong> JWT, Bcrypt</div>
+              <div><strong style="color:var(--accent);">Tools:</strong> Git, GitHub, VS Code, Postman, REST APIs, npm</div>
+            </div>
+            <div style="margin-top:1.5rem;">
+              <span style="color:var(--muted);">Availability</span>
+              <strong style="display:block;font-size:1.2rem; color:#7ac7ff;">Available Immediately · Internship</strong>
+              <span style="color:var(--muted); font-size:0.85rem;">On-site / Hybrid / Remote · Transportation Available</span>
+            </div>
+            <div class="hero-actions" style="margin-top:1.5rem;justify-content:flex-start;">
+              <button class="btn-primary" id="resumeAboutBtn"><i class="fa-solid fa-download"></i> Resume</button>
+              <a href="#projects" class="btn-secondary">See work</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== SKILLS ===== -->
+      <section class="section" id="skills">
+        <div class="section-title">
+          <span>02</span>
+          <div>
+            <h2>Skills & Expertise</h2>
+            <p>Full-stack development with a focus on clean, scalable, and maintainable code.</p>
+          </div>
+        </div>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <h3><i class="fa-brands fa-react" style="color:var(--accent);"></i> Frontend</h3>
+            <p>HTML5, CSS3, JavaScript (ES6+), React.js, Bootstrap, Responsive Web Design</p>
+            <div class="skill-progress">
+              <div class="skill-item">
+                <span>React.js <span>85%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>JavaScript <span>80%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>HTML/CSS <span>90%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="90"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3><i class="fa-brands fa-node" style="color:var(--accent);"></i> Backend</h3>
+            <p>Node.js, Express.js, REST APIs, JWT Authentication, Bcrypt Security</p>
+            <div class="skill-progress">
+              <div class="skill-item">
+                <span>Node.js <span>75%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="75"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>Express.js <span>75%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="75"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>REST APIs <span>80%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3><i class="fa-solid fa-database" style="color:var(--accent);"></i> Database</h3>
+            <p>MongoDB, Mongoose ODM, Schema Design, Data Modeling</p>
+            <div class="skill-progress">
+              <div class="skill-item">
+                <span>MongoDB <span>70%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="70"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>Mongoose <span>70%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="70"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>Schema Design <span>65%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="65"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="skill-card">
+            <h3><i class="fa-solid fa-code" style="color:var(--accent);"></i> Development Tools</h3>
+            <p>Git, GitHub, VS Code, Postman, npm, Version Control</p>
+            <div class="skill-progress">
+              <div class="skill-item">
+                <span>Git/GitHub <span>80%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>VS Code <span>85%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+              </div>
+              <div class="skill-item">
+                <span>Postman <span>70%</span></span>
+                <div class="progress-bar"><div class="progress-fill" data-width="70"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+     <!-- ===== PROJECTS ===== -->
+<section class="section" id="projects">
+  <div class="section-title">
+    <span>03</span>
+    <div>
+      <h2>Project Experience</h2>
+      <p>Full-stack MERN applications built during professional training at EVS Institute.</p>
+    </div>
+  </div>
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-filter="all">All Projects</button>
+    <button class="filter-btn" data-filter="Full-Stack App">Full-Stack</button>
+    <button class="filter-btn" data-filter="E-Commerce Store">E-Commerce</button>
+    <button class="filter-btn" data-filter="Task Management App">Task Manager</button>
+  </div>
+  <div class="projects-grid" id="projectsGrid"></div>
+</section>
+
+      <!-- ===== WHY HIRE ME ===== -->
+      <section class="section" id="hire">
+        <div class="section-title">
+          <span>04</span>
+          <div>
+            <h2>Why Hire Me?</h2>
+            <p>What I bring to the table beyond just code.</p>
+          </div>
+        </div>
+        <div class="hire-grid">
+          <div class="hire-card">
+            <i class="fa-solid fa-rocket"></i>
+            <h4>Problem Solver</h4>
+            <p>I don't just write code; I solve business problems with scalable, efficient solutions.</p>
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          </div>
+          <div class="hire-card">
+            <i class="fa-solid fa-code"></i>
+            <h4>Clean Code</h4>
+            <p>I follow best practices, write readable code, and ensure maintainability for the long term.</p>
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          </div>
+          <div class="hire-card">
+            <i class="fa-solid fa-people-group"></i>
+            <h4>Team Player</h4>
+            <p>I communicate clearly, collaborate effectively, and love sharing knowledge with peers.</p>
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          </div>
+          <div class="hire-card">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <h4>Fast Learner</h4>
+            <p>I adapt quickly to new technologies and thrive in fast-paced, agile environments.</p>
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CERTIFICATIONS ===== -->
+      <section class="section" id="certifications">
+        <div class="section-title">
+          <span>05</span>
+          <div>
+            <h2>Certifications</h2>
+            <p>Professional certifications earned from EVS Institute Lahore.</p>
+          </div>
+        </div>
+        <div class="cert-grid" id="certGrid"></div>
+      </section>
+
+      <!-- ===== EDUCATION ===== -->
+      <section class="section" id="education">
+        <div class="section-title">
+          <span>06</span>
+          <div>
+            <h2>Education & Training</h2>
+            <p>Academic background and professional development.</p>
+          </div>
+        </div>
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="card-top">
+              <span class="project-tag"><i class="fa-solid fa-graduation-cap"></i> Intermediate</span>
+              <h3>ICS — Physics</h3>
+              <p>2024 – 2026<br />Lahore, Pakistan</p>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="card-top">
+              <span class="project-tag"><i class="fa-solid fa-laptop-code"></i> Professional Training</span>
+              <h3>Full Stack Web Development</h3>
+              <p>EVS Institute, Lahore — 2024</p>
+              <p style="font-size:0.85rem; margin-top:0.3rem;">• Built practical MERN Stack projects<br />• Hands-on training from industry professionals<br />• 3 Professional Development Certificates</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===== CONTACT ===== -->
+      <section class="section" id="contact">
+        <div class="section-title">
+          <span>07</span>
+          <div>
+            <h2>Contact</h2>
+            <p>Available immediately for MERN Stack Developer Internship. Let's connect!</p>
+          </div>
+        </div>
+        <div class="contact-panel animate__animated animate__fadeInUp">
+          <div id="tsparticles"></div>
+          <div class="contact-grid">
+            <div class="contact-info">
+              <h3>Let's build something great together.</h3>
+              <p>I'm looking for an internship where I can contribute to real projects, collaborate with experienced developers, and grow into a professional software engineer.</p>
+              <div class="contact-list">
+                <div class="contact-item">
+                  <strong><i class="fa-solid fa-envelope" style="color:var(--accent);"></i> Email</strong>
+                  <span><a href="mailto:hamzaaweb.dev@gmail.com">hamzaaweb.dev@gmail.com</a></span>
+                </div>
+                <div class="contact-item">
+                  <strong><i class="fa-solid fa-phone" style="color:var(--accent);"></i> Phone</strong>
+                  <span><a href="tel:+923223946478">+92 322 3946478</a></span>
+                </div>
+                <div class="contact-item">
+                  <strong><i class="fa-solid fa-location-dot" style="color:var(--accent);"></i> Location</strong>
+                  <span>Lahore, Pakistan</span>
+                </div>
+                <div class="contact-item">
+                  <strong><i class="fa-brands fa-linkedin" style="color:var(--accent);"></i> LinkedIn</strong>
+                  <span><a href="https://linkedin.com/in/hamza-malik-74a181376" target="_blank">linkedin.com/in/hamza-malik-74a181376</a></span>
+                </div>
+                <div class="contact-item">
+                  <strong><i class="fa-brands fa-github" style="color:var(--accent);"></i> GitHub</strong>
+                  <span><a href="https://github.com/mrhananmalik111-wq" target="_blank">github.com/mrhananmalik111-wq</a></span>
+                </div>
+                <div class="contact-item">
+                  <strong><i class="fa-solid fa-circle-check" style="color:var(--accent);"></i> Availability</strong>
+                  <span>Available Immediately · On-site/Hybrid/Remote</span>
+                </div>
+              </div>
+            </div>
+            <div class="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" placeholder="Your name" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" placeholder="Your email" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" placeholder="Internship opportunity / Project" />
+              </div>
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" rows="5" placeholder="Tell me about your internship opportunity or project..."></textarea>
+              </div>
+              <button type="button" id="submitBtn"><i class="fa-solid fa-paper-plane"></i> Send message</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>© 2026 Hamza Malik · MERN Stack Developer · Available Immediately</p>
+        <div class="footer-links">
+          <a href="#hero">Back to top</a>
+          <a href="#contact">Say hello</a>
+          <a href="#projects">View work</a>
+          <a href="https://linkedin.com/in/hamza-malik-74a181376" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="https://github.com/mrhananmalik111-wq" target="_blank"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!-- ===== BACK TO TOP ===== -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- ===== RESUME PREVIEW (Hidden) ===== -->
+  <div id="resumePreview">
+    <div class="resume-header">
+      <h1>HAMZA MALIK</h1>
+      <div class="subtitle">MERN STACK DEVELOPER</div>
+      <div class="tagline">Building Scalable. Responsive. Real-World Web Apps</div>
+      <div class="resume-contact">
+        <span><i class="fa-solid fa-location-dot"></i> Lahore, Pakistan</span>
+        <span><i class="fa-solid fa-envelope"></i> hamzaaweb.dev@gmail.com</span>
+        <span><i class="fa-solid fa-phone"></i> +92 322 3946478</span>
+        <span><i class="fa-brands fa-linkedin"></i> hamza-malik-74a181376</span>
+        <span><i class="fa-brands fa-github"></i> mrhananmalik111-wq</span>
+      </div>
+    </div>
+    <div class="resume-grid-2">
+      <div>
+        <div class="resume-section">
+          <span class="section-title">Professional Summary</span>
+          <p>Motivated MERN Stack Developer with hands-on experience building responsive, full-stack web applications using React.js, Node.js, Express.js, and MongoDB. Successfully completed professional Full Stack Web Development training from EVS Institute Lahore.</p>
+        </div>
+        <div class="resume-section">
+          <span class="section-title">Core Technical Skills</span>
+          <p><strong style="color:#4f9fff;">Frontend:</strong> HTML5, CSS3, JavaScript (ES6+), React.js, Bootstrap, Responsive Web Design</p>
+          <p><strong style="color:#4f9fff;">Backend:</strong> Node.js, Express.js</p>
+          <p><strong style="color:#4f9fff;">Database:</strong> MongoDB, Mongoose</p>
+          <p><strong style="color:#4f9fff;">Auth & Security:</strong> JWT, Bcrypt</p>
+          <p><strong style="color:#4f9fff;">Tools:</strong> Git, GitHub, VS Code, Postman, REST APIs, npm</p>
+        </div>
+      </div>
+      <div>
+        <div class="resume-section">
+          <span class="section-title">Certifications</span>
+          <ul>
+            <li><strong>Full Stack Web Development</strong> — EVS Institute (2024)</li>
+            <li><strong>MERN Stack Web Developer</strong> — EVS Institute (2024)</li>
+            <li><strong>Frontend Web Development</strong> — EVS Institute (2024)</li>
+          </ul>
+        </div>
+        <div class="resume-section">
+          <span class="section-title">Education</span>
+          <ul>
+            <li><strong>Intermediate (ICS — Physics)</strong> — 2024-2026, Lahore</li>
+            <li><strong>Full Stack Web Development</strong> — EVS Institute, Lahore (2024)</li>
+          </ul>
+        </div>
+        <div class="resume-section">
+          <span class="section-title">Availability</span>
+          <p><strong style="color:#7ac7ff;">Available Immediately</strong></p>
+          <p>Internship: MERN Stack Developer</p>
+          <p>On-site / Hybrid / Remote · Transportation Available</p>
+        </div>
+        <div class="resume-section">
+          <span class="section-title">Career Objective</span>
+          <p>To begin my career as a MERN Stack Developer Intern in a professional software house where I can apply my technical skills, contribute to real-world projects, learn from experienced developers, and grow into a highly skilled Full Stack Software Engineer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      <h2 class="modal-title" id="modalTitle">Project Title</h2>
+      <p class="modal-desc" id="modalDesc">Description</p>
+      <div class="modal-grid" id="modalGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMessage">Message sent.</span>
+  </div>
+
+  <!-- ===== CUSTOM JAVASCRIPT ===== -->
+  <script src="script.js"></script>
+
+</body>
+</html>
