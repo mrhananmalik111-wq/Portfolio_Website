@@ -1,11 +1,12 @@
 (function () {
     // ============================================================
-    //  🎤 AI VOICE WELCOME - AUTO ON LOAD + MALE VOICE
+    //  🎤 AI VOICE WELCOME - FIXED FOR LIVE SITE
     // ============================================================
     let voicePlayed = false;
     let isSpeaking = false;
     let voiceAttempts = 0;
     let autoPlayDone = false;
+    let userInteracted = false;
 
     function speakWelcome() {
         if (voicePlayed) return;
@@ -20,7 +21,7 @@
                 const message = "Welcome to Hamza Malik's Portfolio. I'm a MERN Stack Developer, building scalable, responsive, real-world web applications. Feel free to explore my work and connect with me.";
                 const utterance = new SpeechSynthesisUtterance(message);
                 utterance.rate = 0.9;
-                utterance.pitch = 0.9;  // Male voice ke liye pitch low
+                utterance.pitch = 0.9;
                 utterance.volume = 1;
                 utterance.lang = 'en-US';
                 
@@ -30,23 +31,22 @@
                     try {
                         const voices = speechSynthesis.getVoices();
                         
-                        // ✅ MALE VOICE PREFERENCE
+                        // Male voice preference
                         const maleVoice = voices.find(v => 
                             v.name.includes('Google UK English Male') ||
                             v.name.includes('Microsoft David') ||
                             v.name.includes('David') ||
                             v.name.includes('Male') ||
                             v.name.includes('Google US English') ||
-                            v.name.includes('Samantha') // Fallback female
+                            v.name.includes('Samantha')
                         );
                         
                         if (maleVoice) {
                             utterance.voice = maleVoice;
                         }
                         
-                        // Agar male voice na mile toh pitch adjust karein
                         if (!utterance.voice || !utterance.voice.name.includes('Male')) {
-                            utterance.pitch = 0.7; // Deep male voice effect
+                            utterance.pitch = 0.7;
                         }
                         
                         speechSynthesis.speak(utterance);
@@ -57,16 +57,13 @@
                     }
                 };
                 
-                // Check if voices are loaded
                 if (speechSynthesis.getVoices().length > 0) {
                     speakNow();
                 } else {
-                    // Wait for voices to load
                     speechSynthesis.onvoiceschanged = function() {
                         speakNow();
                         speechSynthesis.onvoiceschanged = null;
                     };
-                    // Fallback timeout
                     setTimeout(() => {
                         if (speechSynthesis.getVoices().length === 0) {
                             speakNow();
@@ -83,7 +80,6 @@
                 utterance.onerror = function(e) {
                     console.log('Speech error:', e);
                     isSpeaking = false;
-                    // Retry after delay
                     setTimeout(() => {
                         if (!voicePlayed) {
                             speakWelcome();
@@ -100,10 +96,10 @@
     }
 
     // ============================================================
-    //  🚀 AUTO PLAY ON PAGE LOAD
+    //  🚀 AUTO PLAY ATTEMPTS
     // ============================================================
 
-    // 1. Auto play on page load (after 1 second)
+    // 1. Pehle auto attempt (1 second)
     window.addEventListener('load', function() {
         setTimeout(function() {
             if (!voicePlayed && !autoPlayDone) {
@@ -112,37 +108,68 @@
         }, 1000);
     });
 
-    // 2. Auto play on DOMContentLoaded (fallback)
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            if (!voicePlayed && !autoPlayDone) {
-                speakWelcome();
-            }
-        }, 1500);
-    });
-
-    // 3. Auto play after 2.5 seconds (strong fallback)
+    // 2. Second attempt (2 seconds)
     setTimeout(function() {
         if (!voicePlayed && !autoPlayDone) {
             speakWelcome();
         }
-    }, 2500);
+    }, 2000);
+
+    // 3. Third attempt (3 seconds - final)
+    setTimeout(function() {
+        if (!voicePlayed && !autoPlayDone) {
+            speakWelcome();
+        }
+    }, 3000);
 
     // ============================================================
-    //  🎯 VOICE BUTTON - Manual Trigger
+    //  🎯 USER INTERACTION TRIGGERS
+    // ============================================================
+
+    // 1. Click anywhere - User ne interact kiya
+    document.addEventListener('click', function firstClick() {
+        if (!voicePlayed && !isSpeaking) {
+            userInteracted = true;
+            speakWelcome();
+        }
+        document.removeEventListener('click', firstClick);
+    }, { once: true });
+
+    // 2. Scroll trigger
+    let scrollTriggered = false;
+    document.addEventListener('scroll', function firstScroll() {
+        if (!voicePlayed && !isSpeaking && !scrollTriggered) {
+            scrollTriggered = true;
+            userInteracted = true;
+            speakWelcome();
+        }
+    }, { once: true });
+
+    // 3. Keydown trigger (keyboard interaction)
+    document.addEventListener('keydown', function firstKey() {
+        if (!voicePlayed && !isSpeaking) {
+            userInteracted = true;
+            speakWelcome();
+        }
+        document.removeEventListener('keydown', firstKey);
+    }, { once: true });
+
+    // ============================================================
+    //  🎯 VOICE BUTTON - Manual Trigger (Always Works)
     // ============================================================
 
     const voiceBtn = document.getElementById('voiceBtn');
     if (voiceBtn) {
         voiceBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            // Reset so it can play again
+            // Reset all flags
             voicePlayed = false;
             isSpeaking = false;
             autoPlayDone = false;
+            userInteracted = true;
             speakWelcome();
             
-            // Change button text temporarily
+            // Change button text
             const originalHTML = this.innerHTML;
             this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Speaking...';
             this.disabled = true;
@@ -155,27 +182,19 @@
     }
 
     // ============================================================
-    //  🖱️ Click Anywhere - Additional Trigger
+    //  🔄 Retry if user interacts after failed auto attempts
     // ============================================================
 
-    document.addEventListener('click', function firstClick() {
-        if (!voicePlayed && !isSpeaking && !autoPlayDone) {
-            speakWelcome();
+    setTimeout(function() {
+        if (!voicePlayed) {
+            document.addEventListener('click', function retryClick() {
+                if (!voicePlayed && !isSpeaking) {
+                    speakWelcome();
+                }
+                document.removeEventListener('click', retryClick);
+            }, { once: true });
         }
-        document.removeEventListener('click', firstClick);
-    }, { once: true });
-
-    // ============================================================
-    //  📜 Scroll Trigger - Additional Trigger
-    // ============================================================
-
-    let scrollTriggered = false;
-    document.addEventListener('scroll', function firstScroll() {
-        if (!voicePlayed && !isSpeaking && !autoPlayDone && !scrollTriggered) {
-            scrollTriggered = true;
-            speakWelcome();
-        }
-    }, { once: true });
+    }, 4000);
 
     // ============================================================
     //  SOUND EFFECTS SYSTEM
