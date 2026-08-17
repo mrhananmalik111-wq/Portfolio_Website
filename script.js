@@ -1,13 +1,19 @@
 (function () {
     // ============================================================
-    //  AI VOICE WELCOME - ONLY ONCE (SIMPLIFIED)
+    //  🎤 AI VOICE WELCOME - COMPLETE FIX FOR LIVE SITE
     // ============================================================
     let voicePlayed = false;
+    let voiceAttempts = 0;
+    let isSpeaking = false;
 
     function speakWelcome() {
         if (voicePlayed) return;
+        if (voiceAttempts > 5) return;
+        if (isSpeaking) return;
+        
         try {
             if ('speechSynthesis' in window) {
+                // Cancel any previous speech
                 window.speechSynthesis.cancel();
                 
                 const message = "Welcome to Hamza Malik's Portfolio. I'm a MERN Stack Developer, building scalable, responsive, real-world web applications. Feel free to explore my work and connect with me.";
@@ -17,33 +23,142 @@
                 utterance.volume = 1;
                 utterance.lang = 'en-US';
                 
-                const voices = speechSynthesis.getVoices();
-                const femaleVoice = voices.find(v => v.name.includes('Google UK') || v.name.includes('Samantha') || v.name.includes('Female'));
-                if (femaleVoice) {
-                    utterance.voice = femaleVoice;
+                isSpeaking = true;
+                
+                const speakNow = () => {
+                    try {
+                        const voices = speechSynthesis.getVoices();
+                        const femaleVoice = voices.find(v => 
+                            v.name.includes('Google UK') || 
+                            v.name.includes('Samantha') || 
+                            v.name.includes('Female') ||
+                            v.name.includes('Karen') ||
+                            v.name.includes('Victoria') ||
+                            v.name.includes('Zira') ||
+                            v.name.includes('Microsoft Zira')
+                        );
+                        if (femaleVoice) {
+                            utterance.voice = femaleVoice;
+                        }
+                        speechSynthesis.speak(utterance);
+                        voiceAttempts++;
+                    } catch (e) {
+                        console.log('Speak error:', e);
+                        isSpeaking = false;
+                    }
+                };
+                
+                // Check if voices are loaded
+                if (speechSynthesis.getVoices().length > 0) {
+                    speakNow();
+                } else {
+                    // Wait for voices to load
+                    speechSynthesis.onvoiceschanged = function() {
+                        speakNow();
+                        speechSynthesis.onvoiceschanged = null;
+                    };
+                    // Fallback timeout
+                    setTimeout(() => {
+                        if (speechSynthesis.getVoices().length === 0) {
+                            speakNow();
+                        }
+                    }, 1500);
                 }
                 
                 utterance.onend = function() {
                     voicePlayed = true;
+                    isSpeaking = false;
                 };
                 
-                setTimeout(() => {
-                    speechSynthesis.speak(utterance);
-                }, 1000);
+                utterance.onerror = function(e) {
+                    console.log('Speech error:', e);
+                    isSpeaking = false;
+                    // Retry after delay
+                    setTimeout(() => {
+                        if (!voicePlayed) {
+                            speakWelcome();
+                        }
+                    }, 2000);
+                };
+            } else {
+                console.log('Speech synthesis not supported');
             }
         } catch (e) {
-            console.log('Speech synthesis not supported');
+            console.log('Speech synthesis error:', e);
+            isSpeaking = false;
         }
     }
 
+    // ===== TRIGGER VOICE ON USER INTERACTION =====
+
+    // 1. On first click anywhere on page
+    document.addEventListener('click', function firstClick() {
+        if (!voicePlayed && !isSpeaking) {
+            speakWelcome();
+        }
+        document.removeEventListener('click', firstClick);
+    }, { once: true });
+
+    // 2. On first scroll (if no click)
+    let scrollTriggered = false;
+    document.addEventListener('scroll', function firstScroll() {
+        if (!voicePlayed && !isSpeaking && !scrollTriggered) {
+            scrollTriggered = true;
+            speakWelcome();
+        }
+    }, { once: true });
+
+    // 3. Voice button click (dedicated button)
+    const voiceBtn = document.getElementById('voiceBtn');
+    if (voiceBtn) {
+        voiceBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Reset so it can play again
+            voicePlayed = false;
+            isSpeaking = false;
+            speakWelcome();
+            
+            // Change button text temporarily
+            const originalHTML = this.innerHTML;
+            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Speaking...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = originalHTML;
+                this.disabled = false;
+            }, 5000);
+        });
+    }
+
+    // 4. Fallback: On page load after delay
     window.addEventListener('load', function() {
         setTimeout(function() {
-            speakWelcome();
-        }, 500);
+            if (!voicePlayed && !isSpeaking) {
+                speakWelcome();
+            }
+        }, 3000);
+    });
+
+    // 5. Also try on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            if (!voicePlayed && !isSpeaking) {
+                speakWelcome();
+            }
+        }, 2000);
+    });
+
+    // 6. Retry if user interacts with any button
+    document.querySelectorAll('button, a, .btn-primary, .btn-secondary').forEach(el => {
+        el.addEventListener('click', function() {
+            if (!voicePlayed && !isSpeaking) {
+                speakWelcome();
+            }
+        }, { once: true });
     });
 
     // ============================================================
-    //  🎵 SOUND EFFECTS SYSTEM
+    //  SOUND EFFECTS SYSTEM
     // ============================================================
     
     let audioCtx = null;
@@ -68,7 +183,6 @@
             
             switch(type) {
                 case 'click':
-                    // Button click sound
                     oscillator.frequency.setValueAtTime(800, now);
                     oscillator.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
                     oscillator.type = 'sine';
@@ -79,7 +193,6 @@
                     break;
                     
                 case 'hover':
-                    // Card hover sound (soft)
                     oscillator.frequency.setValueAtTime(600, now);
                     oscillator.frequency.exponentialRampToValueAtTime(900, now + 0.06);
                     oscillator.type = 'sine';
@@ -90,7 +203,6 @@
                     break;
                     
                 case 'success':
-                    // Form submit success
                     oscillator.frequency.setValueAtTime(523, now);
                     oscillator.frequency.setValueAtTime(659, now + 0.1);
                     oscillator.frequency.setValueAtTime(784, now + 0.2);
@@ -102,7 +214,6 @@
                     break;
                     
                 case 'error':
-                    // Form validation error
                     oscillator.frequency.setValueAtTime(300, now);
                     oscillator.frequency.exponentialRampToValueAtTime(150, now + 0.2);
                     oscillator.type = 'sawtooth';
@@ -113,7 +224,6 @@
                     break;
                     
                 case 'modal':
-                    // Modal open
                     oscillator.frequency.setValueAtTime(440, now);
                     oscillator.frequency.exponentialRampToValueAtTime(880, now + 0.15);
                     oscillator.type = 'sine';
@@ -124,7 +234,6 @@
                     break;
                     
                 case 'menu':
-                    // Menu toggle
                     oscillator.frequency.setValueAtTime(500, now);
                     oscillator.frequency.exponentialRampToValueAtTime(700, now + 0.1);
                     oscillator.type = 'triangle';
@@ -135,7 +244,6 @@
                     break;
                     
                 case 'resume':
-                    // Resume download
                     oscillator.frequency.setValueAtTime(600, now);
                     oscillator.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
                     oscillator.type = 'sine';
@@ -146,7 +254,6 @@
                     break;
                     
                 case 'filter':
-                    // Filter button
                     oscillator.frequency.setValueAtTime(700, now);
                     oscillator.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
                     oscillator.type = 'square';
@@ -171,20 +278,18 @@
     }
 
     // ============================================================
-    //  🔘 BUTTON CLICK SOUNDS (NO HOVER)
+    //  🔘 BUTTON CLICK SOUNDS
     // ============================================================
     
-    // All buttons - click only (no hover)
     document.querySelectorAll('button, .btn-primary, .btn-secondary, .btn-success, .btn-large, .filter-btn, #submitBtn, .modal-close, .back-to-top, .menu-toggle').forEach(el => {
         el.addEventListener('click', function(e) {
-            // Don't interfere with form submission
-            if (this.id === 'submitBtn') return;
+            if (this.id === 'submitBtn' || this.id === 'voiceBtn') return;
             playSound('click');
         });
     });
 
     // ============================================================
-    //  🎯 CARD HOVER SOUNDS ONLY
+    //  🎯 CARD HOVER SOUNDS
     // ============================================================
     
     document.querySelectorAll('.project-card, .profile-card, .skills-card, .hire-card, .cert-card, .education-card, .skill-category-card').forEach(card => {
@@ -194,7 +299,7 @@
     });
 
     // ============================================================
-    //  🔗 NAV LINKS - CLICK ONLY (NO HOVER)
+    //  🔗 NAV LINKS - CLICK ONLY
     // ============================================================
     
     document.querySelectorAll('.nav-links a, .mobile-menu a, .footer-links a, .social-links a').forEach(link => {
@@ -233,10 +338,12 @@
     // ============================================================
     
     const backToTop = document.getElementById('backToTop');
-    backToTop.addEventListener('click', function() {
-        playSound('click');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    if (backToTop) {
+        backToTop.addEventListener('click', function() {
+            playSound('click');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
     // ============================================================
     //  📄 RESUME DOWNLOAD
@@ -258,7 +365,6 @@
     const modalDesc = document.getElementById('modalDesc');
     const modalGrid = document.getElementById('modalGrid');
 
-    // Modal close sound
     if (modalClose) {
         modalClose.addEventListener('click', function() {
             playSound('click');
@@ -454,12 +560,10 @@
                     </div>
                 </div>
             `;
-            // Click - Modal sound
             card.addEventListener('click', function() {
                 playSound('modal');
                 openModal(item);
             });
-            // Hover - Card hover sound
             card.addEventListener('mouseenter', function() {
                 playSound('hover');
             });
